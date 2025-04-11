@@ -1,19 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { FirstKeyPipe } from '../../shared/pipes/first-key.pipe';
 import { AuthService } from '../../shared/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router, RouterLink } from '@angular/router';
 
 
 
 @Component({
   selector: 'app-registeration',
-  imports: [ReactiveFormsModule,CommonModule,FirstKeyPipe],
+  imports: [ReactiveFormsModule,CommonModule,FirstKeyPipe,RouterLink],
   templateUrl: './registeration.component.html',
   styles: ``
 })
-export class RegisterationComponent{
+export class RegisterationComponent implements OnInit{
 
 form: FormGroup;
 isSubmitted:boolean=false;
@@ -33,7 +34,8 @@ passwordMatchValidator: ValidatorFn = (control: AbstractControl): null => {
 
 constructor(public formBuilder:FormBuilder,
   private service:AuthService,
-  private toastr:ToastrService
+  private toastr:ToastrService,
+  private router:Router
 ){
  
   this. form = this.formBuilder.group({
@@ -48,6 +50,11 @@ constructor(public formBuilder:FormBuilder,
 
 
 }
+  ngOnInit(): void {
+    if(this.service.isLoggedIn()){
+      this.router.navigateByUrl("/dashboard");
+     } 
+  }
 
 onSubmit(){
   this.isSubmitted=true;
@@ -79,7 +86,7 @@ error: err => {
       }
     })
   else
-    console.log('error:', err);
+    console.log('error see:', err);
 }
 
   });
