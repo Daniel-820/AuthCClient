@@ -6,7 +6,7 @@ import { FirstKeyPipe } from './shared/pipes/first-key.pipe';
 
 @Component({
   selector: 'app-root',
-  imports: [UserComponent],
+  imports: [UserComponent,RouterOutlet],
   templateUrl: './app.component.html',
   styles: [],
 })
